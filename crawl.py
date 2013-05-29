@@ -56,7 +56,7 @@ def write_results(results, path):
 
             ffile.write(FOLLOWER_LINK_TEMPLATE.format(*ff_pair))
 
-'''
+
     with open(tweet_path,'w') as tfile:
 
 
@@ -70,7 +70,7 @@ def write_results(results, path):
         for nn in results[2]:
 
             nnfile.write(NAME_NUMBER_TEMPLATE.format(*nn))
-'''
+
        
 
     
