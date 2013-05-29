@@ -1,7 +1,9 @@
 
-from chirplib.followgraph import name_number_correspondence, numbered_filename, number_from_filename
+from chirik.followgraph import name_number_correspondence, numbered_filename, number_from_filename
 import os
+import re
 
+pattern = re.compile('[\W#@]+')
 
 def parse_ut_folder(path):
 
@@ -21,6 +23,10 @@ def number_tweets(ut_path):
 
     '''
 
+
+
+
+    
     for name in os.listdir(ut_path):
     
         num_filename = numbered_filename(os.path.join(ut_path,name))
@@ -35,4 +41,4 @@ def number_tweets(ut_path):
             with open(full_path) as tweetfile:
 
                 for line in tweetfile:
-                    yield (id_num,line)
+                    yield (id_num, pattern.sub('',line))

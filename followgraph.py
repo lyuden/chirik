@@ -1,6 +1,8 @@
 import os
 import pprint
 
+from itertools import chain
+
 def numbered_filename(pathname):
 
     infolder = os.listdir(pathname)
@@ -32,43 +34,39 @@ def name_number_correspondence(path):
 
 def following_tuples(path):
 
-    names=os.listdir(path)
+    names = os.listdir(path)
 
     for name in names :
 
-        pathname=os.path.join(path,name)
-
+        pathname = os.path.join(path,name)
         num_filename = numbered_filename(pathname)
 
         if not (num_filename is None):
-            
+
+            u_number = number_from_filename(num_filename)
+        
             with open(os.path.join(pathname,num_filename)) as filename:
                 for latter in filename:
-                    yield (number_from_filename(num_filename),int(latter.strip()))
+                    yield (u_number,int(latter.strip()))
 
+def reverse_tuples(tupleiter):
 
+    for tup in tupleiter:
+
+        yield (tup[1],tup[0])
+
+                    
 def mix_followers(user_following,user_followers):
 
-    
-
-        #for i3,e3 in enumerate(e):
             
-        #    print e3
+    #follow_set = set(user_following)
 
-        #    if i3 >10:
-        #        break
-    
-            
-    follow_set=set(user_following)
+    followers_reversed =reverse_tuples(user_followers)
+
+    #follow_set.update(followers_reversed)
 
 
-    g=((t[1],t[0]) for t in user_followers)
-
-    
-
-    follow_set.update(g)
-
-    return follow_set
+    return chain(user_following,followers_reversed)
     
     
 

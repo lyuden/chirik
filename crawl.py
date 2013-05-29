@@ -5,8 +5,11 @@ from chirik.tweettext import number_tweets
 
 from itertools import chain
 
+from functools import partial
+
 FOLLOWER_LINK_TEMPLATE= "{} {}\n"
 NUMBER_TWIT_TEMPLATE= "{} {}\n"
+NAME_NUMBER_TEMPLATE= "{} {}\n"
 
 
 def parse_one_crawl_dir(path):
@@ -31,7 +34,7 @@ def parse_all_crawls(path):
 
     results=[parse_one_crawl_dir(os.path.join(path,crawl_dir)) for crawl_dir in crawl_dirs]
 
-    t_results=zip(*results)
+    t_results = zip(*results)
 
     #print t_results
     
@@ -41,8 +44,11 @@ def parse_all_crawls(path):
     
 def write_results(results, path):
 
-    follow_path=os.path.join(path,'follow_graph.txt')
-    tweet_path=os.path.join(path,'number_tweets.txt')
+    pathdir=partial(os.path.join,path)
+
+    follow_path = pathdir('follow_graph.txt')
+    tweet_path = pathdir('number_tweets.txt')
+    name_number_path = pathdir('name_number.txt')
 
     with open(follow_path,'w') as ffile:
 
@@ -50,13 +56,21 @@ def write_results(results, path):
 
             ffile.write(FOLLOWER_LINK_TEMPLATE.format(*ff_pair))
 
-
+'''
     with open(tweet_path,'w') as tfile:
 
 
         for tw in results[3]:
 
             tfile.write(NUMBER_TWIT_TEMPLATE.format(*tw))
-        
+
+    with open(name_number_path,'w') as nnfile:
+
+
+        for nn in results[2]:
+
+            nnfile.write(NAME_NUMBER_TEMPLATE.format(*nn))
+'''
+       
 
     
