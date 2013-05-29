@@ -49,7 +49,7 @@ def write_results(results, path):
     follow_path = pathdir('follow_graph.txt')
     tweet_path = pathdir('number_tweets.txt')
     name_number_path = pathdir('name_number.txt')
-
+    
     with open(follow_path,'w') as ffile:
 
         for ff_pair in mix_followers(results[0],results[1]):
@@ -63,7 +63,7 @@ def write_results(results, path):
         for tw in results[3]:
 
             tfile.write(NUMBER_TWIT_TEMPLATE.format(*tw))
-
+    
     with open(name_number_path,'w') as nnfile:
 
 

@@ -25,7 +25,8 @@ def name_number_correspondence(path):
     
         num_filename = numbered_filename(os.path.join(path,name))
 
-        if not (numbered_filename is None):
+
+        if not (num_filename is None):
 
             yield (name,
                    number_from_filename(num_filename))
