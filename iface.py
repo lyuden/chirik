@@ -1,4 +1,4 @@
-from chirik.crawl import parse_one_crawl_dir, parse_all_crawls,write_results
+
 import argparse
 import os
 
@@ -14,6 +14,7 @@ parser.add_argument("path", type = str,  help ="Path to directory with data to p
 
 parser.add_argument("--output-folder", dest = 'output',help="Path to folder where result files would be written. Default is current dir",default='.')
 
+parser.add_argument("--individuals-folder", dest = "ifolder", help = "Path to folder that contains files with user name see README 'Individual files'" ,default = "./individual")
 
 
 def run_interface(args=None):
@@ -23,17 +24,10 @@ def run_interface(args=None):
         args = parser.parse_args()
 
 
-    dirlist = os.listdir(args.path)
+    return args
 
 
-    if reduce (lambda c,a : a  and (c in CRAWL_DIR_TEMPLATE),dirlist,True):
 
-        results = parse_one_crawl_dir(args.path)
-    else:
-        results=parse_all_crawls(args.path)
-        
-            
-    write_results(results,args.output)        
 
         
 

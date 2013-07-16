@@ -1,0 +1,3 @@
+FOLLOWER_LINK_TEMPLATE= "{},{} {},{}\n"
+NUMBER_TWIT_TEMPLATE= "{} {}\n"
+NAME_NUMBER_TEMPLATE= "{} {}\n"

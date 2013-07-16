@@ -1,5 +1,12 @@
 from chirik.iface import run_interface
 
+from chirik import main
+
+    
+
 
 if __name__ =="__main__":
-    run_interface()
+
+    args = run_interface()
+    main(args)
+    
