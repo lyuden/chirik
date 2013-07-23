@@ -16,6 +16,8 @@ parser.add_argument("--output-folder", dest = 'output',help="Path to folder wher
 
 parser.add_argument("--individuals-folder", dest = "ifolder", help = "Path to folder that contains files with user name see README 'Individual files'" ,default = "./individual")
 
+parser.add_argument("--ind-output-folder", dest = "ioutfolder", help = "Path to folder where individual files reaults would be outputted by default it is output to individual folder 'Individual files'" ,default = "")
+
 
 def run_interface(args=None):
 

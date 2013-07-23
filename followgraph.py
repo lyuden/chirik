@@ -81,10 +81,10 @@ def reverse_tuples(tupleiter):
         yield (tup[1],tup[0])
 
                     
-def mix_followers(user_following,user_followers, cache = None):
+def mix_followers(user_following,user_followers,cache =None):
 
             
-    #follow_set = set(user_following)
+    follow_set = set([])
 
 
 

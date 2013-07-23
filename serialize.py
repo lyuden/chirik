@@ -1,6 +1,6 @@
 import os
 
-from chirik.individual import mentions_wrapper, collect_words, extract_words,followers_wrapper
+from chirik.individual import collect_words, extract_words
 
 from constants import FOLLOWER_LINK_TEMPLATE,NAME_NUMBER_TEMPLATE,NUMBER_TWIT_TEMPLATE
 
@@ -8,7 +8,7 @@ from constants import FOLLOWER_LINK_TEMPLATE,NAME_NUMBER_TEMPLATE,NUMBER_TWIT_TE
 
 from chirik.followgraph import number_to_number_and_name
 
-def write_individ_tweets(individ_path,mentions):
+def write_individ_tweets(individ_path,ioutfolder,mentions):
 
 
     wordlist = collect_words(individ_path)
@@ -22,9 +22,9 @@ def write_individ_tweets(individ_path,mentions):
 
         speaker,word = result['first'],result['second']
 
-        with open(os.path.join(individ_path,filename.split('.txt')[0] + "_tweets.txt"),'w') as tweetfile:
+        with open(os.path.join(ioutfolder,filename.split('.txt')[0] + "_tweets.txt"),'w') as tweetfile:
             for line in mentions[speaker]:
-                tweetfile.write(NUMBER_TWIT_TEMPLATE.format(line[0],line[1]))
+                tweetfile.write(NUMBER_TWIT_TEMPLATE.format(line['id'],line['text']))
                             
 
 
@@ -57,10 +57,12 @@ def write_followers(followers_iter,inv_namecache,follow_path):
 
         for followed,follower in followers_iter:
 
+            #print followed,follower
 
             res = number_to_number_and_name(followed,inv_namecache)+ number_to_number_and_name(follower,inv_namecache)
 
             ffile.write(FOLLOWER_LINK_TEMPLATE.format(*res ))
+
 
 
 def write_iterator(filepath,template, iterator):

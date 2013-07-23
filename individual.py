@@ -64,70 +64,49 @@ def collect_words(path):
 
 
 
-def followers_wrapper(individ_path,mentions,namecache,inv_namecache):
+def write_individual_followers(individ_path,individ_output,mentions,namecache,inv_namecache,followiter):
 
 
     
 
-    def wrapper(iterfunc):
 
-        print 'Namecache', namecache
-
-        files_to_write = [(
-        extract_words(
-            os.path.join(individ_path,filename)),
-        open(filename.split('.txt')[0] +"_follow_graph.txt",'w'))
+    files_to_write = [(
+    extract_words(
+        os.path.join(individ_path,filename)),
+    open(os.path.join(individ_output,filename.split('.txt')[0] +"_follow_graph.txt"),'w'))
         for filename in os.listdir(individ_path)]
 
-        filehandle_dict = dict([(namecache[filehandle[0]['first']], filehandle)  for filehandle in files_to_write ])
-
-        
-        for item in iterfunc:
-
-            print item[0],item,filehandle_dict
-            if item[0] in filehandle_dict:
-
-                towrite = number_to_number_and_name(item[0],inv_namecache)+number_to_number_and_name(item[1],inv_namecache)
-                filehandle_dict[item[0]][1].write(FOLLOWER_LINK_TEMPLATE.format(*towrite))
-
-            yield item
-
-        for filehandle in files_to_write:
-
-            filehandle[1].close()
-
-    return wrapper
-
-    
-def mentions_wrapper(mention_accum,wordlist,tweetiter):
-
-    '''
-    
-
-    '''
-
-    for tweetline in tweetiter:
-
-                #including all tweets by user listed as first word
-                if tweetline[0] in wordlist:
-                    
-                    mention_accum[tweetline[0]].append(tweetline)
-
-                for mention in find_mentions(wordlist,tweetline[1]):
-
-                    mention_accum[mention[0]].append(tweetline)
-
-                yield tweetline
-
-
-
-
+    filehandle_dict = dict([(namecache[filehandle[0]['first']], filehandle)  for filehandle in files_to_write ])
 
     
         
-        
+    for item in followiter:
+
+        if item[0] in filehandle_dict:
+
+            towrite = number_to_number_and_name(item[0],inv_namecache)+number_to_number_and_name(item[1],inv_namecache)
+            filehandle_dict[item[0]][1].write(FOLLOWER_LINK_TEMPLATE.format(*towrite))
+
+        else:
 
 
-            
+
+            for name in filehandle_dict:
+
+                idn = inv_namecache[name]
+
+                if item[0] in [mention['id'] for mention in  mentions[idn]]:
+
+                    towrite = number_to_number_and_name(item[0],inv_namecache)+number_to_number_and_name(item[1],inv_namecache)
+                    #print towrite
+                    filehandle_dict[name][1].write(FOLLOWER_LINK_TEMPLATE.format(*towrite))
+
+
+    for filehandle in files_to_write:
+
+        filehandle[1].close()
+
+
+
     
     
