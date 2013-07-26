@@ -5,7 +5,7 @@ from constants import FOLLOWER_LINK_TEMPLATE
 from chirik.followgraph import number_to_number_and_name
 
 
-def find_mentions(wordlist,tweetline):
+def find_mentions_of_second_word(wordlist,tweettext):
 
     '''
     Returns list of user handlers whos 'words' are in this tweetline
@@ -14,7 +14,16 @@ def find_mentions(wordlist,tweetline):
 
 
     #print wordlist,tweetline
-    return [(ew['first'],tweetline) for ew in wordlist if tweetline.find(ew['second'])>=0]
+
+    return [ew['first'] for ew in wordlist if tweettext.find(ew['second'])>=0]
+
+
+def find_mentions_of_individual_users(wordlist,tweettext):
+
+    
+    return [ew['first'] for ew in wordlist if tweettext.find(ew['first'])>=0]
+
+
 
 
 
@@ -70,6 +79,7 @@ def write_individual_followers(individ_path,individ_output,mentions,namecache,in
     
 
 
+    # Creating array of files we would write to
     files_to_write = [(
     extract_words(
         os.path.join(individ_path,filename)),
@@ -78,10 +88,22 @@ def write_individual_followers(individ_path,individ_output,mentions,namecache,in
 
     filehandle_dict = dict([(namecache[filehandle[0]['first']], filehandle)  for filehandle in files_to_write ])
 
-    
+    # Creating cache of all id's of users that's assosiated with every individual user
+    mention_idn_cache = {}
+
+    for name in filehandle_dict:
+
+        idn = inv_namecache[name]
+        
+        mention_idn_cache[idn]=tuple(mention['id'] for mention in  mentions[idn])
+
+
+    # Taking all followers one by one and checking if they are satisfy conditions
         
     for item in followiter:
 
+
+        # If this followed follower pairs followed is amongst indiwiduals we write down
         if item[0] in filehandle_dict:
 
             towrite = number_to_number_and_name(item[0],inv_namecache)+number_to_number_and_name(item[1],inv_namecache)
@@ -90,12 +112,12 @@ def write_individual_followers(individ_path,individ_output,mentions,namecache,in
         else:
 
 
-
+            # If this followed in mentions for some user we write him down in according file
             for name in filehandle_dict:
 
                 idn = inv_namecache[name]
 
-                if item[0] in [mention['id'] for mention in  mentions[idn]]:
+                if item[0] in mention_idn_cache[idn]:
 
                     towrite = number_to_number_and_name(item[0],inv_namecache)+number_to_number_and_name(item[1],inv_namecache)
                     #print towrite

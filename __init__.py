@@ -68,7 +68,17 @@ def generate_mentions(root,ifolder):
 
         # if somebody mentions some user listed as first word in individual files
 
-        for mention in find_mentions(wordlist,tweetline['text']):
+        tweettext = tweetline['text']
+        user_mentions=[ew['first'] for ew in wordlist if tweettext.find(ew['first'])>=0]
+        
+        second_word_mentions = [ew['first'] for ew in wordlist if tweettext.find(ew['second'])>=0]
+
+        residue_mentions = [ew['first'] for ew in wordlist if
+                            
+                            reduce (lambda a,v: a or v,
+                                    [tweettext.find(s)>=0 for s in ew['residue']], False)]
+        
+        for mention in user_mentions+second_word_mentions+residue_mentions:
 
             mentions[mention[0]].append(tweetline)
 
