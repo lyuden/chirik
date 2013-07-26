@@ -1,4 +1,4 @@
-from chirik.individual import collect_words, find_mentions, write_individual_followers
+from chirik.individual import collect_words,  write_individual_followers
 from chirik.followgraph import mix_followers 
 from chirik.flow import dataflow_generator
 
@@ -80,7 +80,8 @@ def generate_mentions(root,ifolder):
         
         for mention in user_mentions+second_word_mentions+residue_mentions:
 
-            mentions[mention[0]].append(tweetline)
+            
+            mentions[mention].append(tweetline)
 
     #print "\n Mentions\n",mentions
     return mentions

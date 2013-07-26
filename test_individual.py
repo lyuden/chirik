@@ -1,4 +1,4 @@
-from chirik.individual import find_mentions
+#from chirik.individual import find_mentions
 
 from chirik.followgraph import mix_followers
 
@@ -40,12 +40,6 @@ d={'111':UT1_CONTENTS,
 '333':UT3_CONTETS}
 patt = re.compile('[^\w ]+')
 TWEETS_ANSWER= '\n'.join([a+' '+patt.sub('',s)  for a in d for s in d[a].split('\n') if s !='' ])
-
-@nottest
-def test_find_mentions():
-
-    res = find_mentions({"a":'b'}, "b")
-    assert res == [('a','b')]
 
 
 def mock_tweetline_iter(ut_path):

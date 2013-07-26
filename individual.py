@@ -5,28 +5,6 @@ from constants import FOLLOWER_LINK_TEMPLATE
 from chirik.followgraph import number_to_number_and_name
 
 
-def find_mentions_of_second_word(wordlist,tweettext):
-
-    '''
-    Returns list of user handlers whos 'words' are in this tweetline
-
-    '''
-
-
-    #print wordlist,tweetline
-
-    return [ew['first'] for ew in wordlist if tweettext.find(ew['second'])>=0]
-
-
-def find_mentions_of_individual_users(wordlist,tweettext):
-
-    
-    return [ew['first'] for ew in wordlist if tweettext.find(ew['first'])>=0]
-
-
-
-
-
 def extract_words(path_to_file):
 
     '''
@@ -79,12 +57,12 @@ def write_individual_followers(individ_path,individ_output,mentions,namecache,in
     
 
 
-    # Creating array of files we would write to
+    # Creating array of files we would write to ignoring all _tweets and _follow_graph ones
     files_to_write = [(
     extract_words(
         os.path.join(individ_path,filename)),
     open(os.path.join(individ_output,filename.split('.txt')[0] +"_follow_graph.txt"),'w'))
-        for filename in os.listdir(individ_path)]
+        for filename in os.listdir(individ_path) if (not('follow_graph' in filename)) and (not ('_tweets' in filename))]
 
     filehandle_dict = dict([(namecache[filehandle[0]['first']], filehandle)  for filehandle in files_to_write ])
 

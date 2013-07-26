@@ -86,7 +86,7 @@ def test_create_followers_file():
         
     print result,inv_namecache
     assert flag
-@nottest
+
 def test_create_individual_followers_files():
 
     tmpdir = tempfile.mkdtemp()
@@ -106,15 +106,30 @@ def test_create_individual_followers_files():
 
     inv_namecache = {v:k for k, v in namedict.items()}
 
-    #print mentions
+    print mentions.keys()
 
-    create_individual_followers_files(ifolder,crawldir,
+    create_individual_followers_files(ifolder,crawldir,ifolder,
                                       mentions,namedict,inv_namecache)
 
 
-    #print ifolder
-    #assert False
+    outfile_path =os.path.join(ifolder,'i1_follow_graph.txt')
+    with open(outfile_path) as fileread:
 
+        result = fileread.read()
+
+    test=('111,user1 333,user3',
+        '222,user2 111,user1',
+        '111,user1 222,user2',
+        '222,user2 333,user3')
+
+    flag = True
+    for sample in test:
+
+        flag = flag and sample in result.split('\n')
+
+    
+    print ifolder
+    assert flag
 
 @nottest
 def test_write_individ_tweets():
@@ -125,8 +140,8 @@ def test_write_individ_tweets():
     mentions = generate_mentions(crawldir,ifolder)
 
     
-    write_individ_tweets(ifolder,mentions)
+    write_individ_tweets(ifolder,ifolder,mentions)
 
-    #print ifolder
+    print ifolder
 
-    #assert False
+    assert False
